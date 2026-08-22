@@ -606,12 +606,12 @@ A aplicação deverá ser:
 
 > Substituam a tabela abaixo pelos integrantes reais.
 
-| Integrante | GitHub | Responsabilidade principal |
-|---|---|---|
-| Nome 01 | `@usuario` | Back-end Lead |
-| Nome 02 | `@usuario` | Front-end Lead |
-| Nome 03 | `@usuario` | Design Lead |
-| Nome 04 | `@usuario` | Project Management Lead |
+| Integrante | GitHub     | Responsabilidade principal |
+| ---------- | ---------- | -------------------------- |
+| Nome 01    | `@usuario` | Back-end Lead              |
+| Nome 02    | `@usuario` | Front-end Lead             |
+| Nome 03    | `@usuario` | Design Lead                |
+| Nome 04    | `@usuario` | Project Management Lead    |
 
 ---
 
@@ -639,5 +639,6 @@ http://localhost/NOME-DO-REPOSITORIO/
 Se a página inicial do template aparecer, o ambiente básico está funcionando.
 
 A partir daqui, **o template deixa de ser do professor e passa a ser o projeto da equipe**. Personalizem a estrutura, a documentação e a aplicação para representar a solução definida na Atividade 01.
-#   p r o j e t o - i n t e g r a d o r - p h p  
+#   p r o j e t o - i n t e g r a d o r - p h p 
+ 
  
