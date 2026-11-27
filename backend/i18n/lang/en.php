@@ -13,6 +13,7 @@ return [
     'meta.package_missing' => 'Package not found | Destyn Trips',
 
     'nav.skip' => 'Skip to content',
+    'nav.menu' => 'Open menu',
     'nav.home' => 'Home',
     'nav.about' => 'About',
     'nav.tours' => 'Tours',

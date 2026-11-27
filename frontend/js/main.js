@@ -3,10 +3,18 @@
   const toggle = document.querySelector('[data-mobile-nav-toggle]');
 
   if (nav && toggle) {
+    const iconOpen = toggle.querySelector('[data-icon-open]');
+    const iconClose = toggle.querySelector('[data-icon-close]');
+
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      nav.classList.toggle('hidden');
+      const next = !expanded;
+      toggle.setAttribute('aria-expanded', next ? 'true' : 'false');
+      nav.classList.toggle('hidden', !next);
+      if (iconOpen && iconClose) {
+        iconOpen.classList.toggle('hidden', next);
+        iconClose.classList.toggle('hidden', !next);
+      }
     });
   }
 
