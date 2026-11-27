@@ -64,6 +64,47 @@ $customers = [
     ['name' => 'Henrique Duarte', 'email' => 'henrique.duarte@email.com'],
 ];
 
+/**
+ * Random timestamp between $minDaysAgo and $maxDaysAgo days before $now.
+ */
+$seedRandomDate = static function (
+    DateTimeImmutable $now,
+    int $minDaysAgo,
+    int $maxDaysAgo
+): string {
+    if ($minDaysAgo > $maxDaysAgo) {
+        [$minDaysAgo, $maxDaysAgo] = [$maxDaysAgo, $minDaysAgo];
+    }
+
+    $daysAgo = random_int($minDaysAgo, $maxDaysAgo);
+    $seconds = random_int(0, 86399);
+
+    return $now
+        ->modify("-{$daysAgo} days")
+        ->setTime(0, 0)
+        ->modify("+{$seconds} seconds")
+        ->format('Y-m-d H:i:s');
+};
+
+/**
+ * Random timestamp strictly after $after and at or before $now.
+ */
+$seedRandomDateAfter = static function (
+    DateTimeImmutable $now,
+    DateTimeImmutable $after
+): string {
+    $start = $after->getTimestamp() + 3600;
+    $end = $now->getTimestamp();
+
+    if ($start >= $end) {
+        return $now->format('Y-m-d H:i:s');
+    }
+
+    return (new DateTimeImmutable('@' . random_int($start, $end)))
+        ->setTimezone($now->getTimezone())
+        ->format('Y-m-d H:i:s');
+};
+
 try {
     $pdo = new PDO($dsn, $username, $password, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -73,33 +114,50 @@ try {
 
     $pdo->beginTransaction();
 
+    $now = new DateTimeImmutable('now');
+    $userCreatedAtById = [];
+
     $userStatement = $pdo->prepare(
-        'INSERT INTO users (name, email, password_hash, role)
-         VALUES (:name, :email, :password_hash, :role)
+        'INSERT INTO users (name, email, password_hash, role, created_at)
+         VALUES (:name, :email, :password_hash, :role, :created_at)
          ON DUPLICATE KEY UPDATE
              name = VALUES(name),
              password_hash = VALUES(password_hash),
-             role = VALUES(role)'
+             role = VALUES(role),
+             created_at = VALUES(created_at)'
+    );
+    $findUserIdStatement = $pdo->prepare(
+        'SELECT id FROM users WHERE email = :email LIMIT 1'
     );
 
     $adminHash = password_hash((string) getenv('SEED_ADMIN_PASSWORD'), PASSWORD_DEFAULT);
     foreach ($admins as $admin) {
+        $createdAt = $seedRandomDate($now, 60, 240);
         $userStatement->execute([
             'name' => $admin['name'],
             'email' => $admin['email'],
             'password_hash' => $adminHash,
             'role' => 'admin',
+            'created_at' => $createdAt,
         ]);
+        $findUserIdStatement->execute(['email' => $admin['email']]);
+        $userId = (int) $findUserIdStatement->fetchColumn();
+        $userCreatedAtById[$userId] = $createdAt;
     }
 
     $customerHash = password_hash((string) getenv('SEED_CUSTOMER_PASSWORD'), PASSWORD_DEFAULT);
     foreach ($customers as $customer) {
+        $createdAt = $seedRandomDate($now, 5, 180);
         $userStatement->execute([
             'name' => $customer['name'],
             'email' => $customer['email'],
             'password_hash' => $customerHash,
             'role' => 'customer',
+            'created_at' => $createdAt,
         ]);
+        $findUserIdStatement->execute(['email' => $customer['email']]);
+        $userId = (int) $findUserIdStatement->fetchColumn();
+        $userCreatedAtById[$userId] = $createdAt;
     }
 
     // Remove contas antigas de demo que não fazem mais parte do seed.
@@ -224,29 +282,47 @@ try {
         'SELECT id FROM purchases WHERE user_id = :user_id AND package_id = :package_id LIMIT 1'
     );
     $purchaseStatement = $pdo->prepare(
-        'INSERT INTO purchases (user_id, package_id, status)
-         VALUES (:user_id, :package_id, :status)'
+        'INSERT INTO purchases (user_id, package_id, status, purchased_at)
+         VALUES (:user_id, :package_id, :status, :purchased_at)'
+    );
+    $updatePurchaseDateStatement = $pdo->prepare(
+        'UPDATE purchases
+         SET purchased_at = :purchased_at, status = :status
+         WHERE id = :id'
     );
 
-    // Garante volume suficiente para paginação de reservas.
+    // Garante volume suficiente para paginação de reservas, com datas variadas.
     if (is_array($packageIds) && $packageIds !== [] && is_array($customerIds)) {
-        $pairs = 0;
         foreach ($customerIds as $index => $customerId) {
+            $customerId = (int) $customerId;
             $pkgA = (int) $packageIds[$index % count($packageIds)];
             $pkgB = (int) $packageIds[($index + 3) % count($packageIds)];
+            $signupAt = new DateTimeImmutable(
+                $userCreatedAtById[$customerId] ?? $seedRandomDate($now, 5, 180)
+            );
 
             foreach ([$pkgA, $pkgB] as $packageId) {
+                $purchasedAt = $seedRandomDateAfter($now, $signupAt);
+
                 $findPurchaseStatement->execute([
-                    'user_id' => (int) $customerId,
+                    'user_id' => $customerId,
                     'package_id' => $packageId,
                 ]);
-                if ($findPurchaseStatement->fetchColumn() === false) {
+                $purchaseId = $findPurchaseStatement->fetchColumn();
+
+                if ($purchaseId === false) {
                     $purchaseStatement->execute([
-                        'user_id' => (int) $customerId,
+                        'user_id' => $customerId,
                         'package_id' => $packageId,
                         'status' => 'confirmed',
+                        'purchased_at' => $purchasedAt,
                     ]);
-                    $pairs++;
+                } else {
+                    $updatePurchaseDateStatement->execute([
+                        'id' => (int) $purchaseId,
+                        'purchased_at' => $purchasedAt,
+                        'status' => 'confirmed',
+                    ]);
                 }
             }
         }
