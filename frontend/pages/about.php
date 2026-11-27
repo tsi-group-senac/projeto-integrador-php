@@ -91,9 +91,9 @@ require __DIR__ . '/../components/header.php';
         <div class="mt-10 grid gap-6 sm:grid-cols-3">
             <?php
             $services = [
-                ['icon' => app_url('/frontend/assets/images/icon-weather.png'), 'title' => __('home.service_weather_title'), 'text' => __('about.service_weather_text')],
-                ['icon' => app_url('/frontend/assets/images/icon-guide.png'), 'title' => __('home.service_guide_title'), 'text' => __('about.service_guide_text')],
-                ['icon' => app_url('/frontend/assets/images/icon-custom.png'), 'title' => __('home.service_custom_title'), 'text' => __('about.service_custom_text')],
+                ['icon' => 'cloud-sun', 'title' => __('home.service_weather_title'), 'text' => __('about.service_weather_text')],
+                ['icon' => 'map-pinned', 'title' => __('home.service_guide_title'), 'text' => __('about.service_guide_text')],
+                ['icon' => 'sliders-horizontal', 'title' => __('home.service_custom_title'), 'text' => __('about.service_custom_text')],
             ];
             foreach ($services as $service):
                 $serviceIcon = $service['icon'];

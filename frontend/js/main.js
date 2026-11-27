@@ -9,4 +9,22 @@
       nav.classList.toggle('hidden');
     });
   }
+
+  const bootIcons = () => {
+    if (typeof lucide === 'undefined' || typeof lucide.createIcons !== 'function') {
+      return;
+    }
+
+    lucide.createIcons({
+      attrs: {
+        'stroke-width': 1.75,
+      },
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootIcons);
+  } else {
+    bootIcons();
+  }
 })();
