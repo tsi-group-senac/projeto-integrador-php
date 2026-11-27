@@ -18,6 +18,14 @@ Ele permite criar a estrutura do banco utilizando o phpMyAdmin. O schema usa
 `utf8mb4`, chaves estrangeiras restritivas e desativação lógica por meio de
 `is_active` para destinos e pacotes.
 
+## Backup completo (faculdade / outro PC)
+
+```text
+backups/projeto_integrador_backup.sql
+```
+
+Importa schema **e** dados demo de uma vez. Guia: `.agents/SETUP_WINDOWS_XAMPP.md`.
+
 ## Seeds demonstrativas
 
 Após importar `database.sql`, execute `database/seeds/seed.php` pela linha de
