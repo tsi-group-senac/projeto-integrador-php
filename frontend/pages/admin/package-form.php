@@ -12,6 +12,7 @@ $packageId = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, [
     'options' => ['min_range' => 1],
 ]);
 $isEdit = $packageId !== false && $packageId !== null;
+$editLookupFailed = false;
 $fieldErrors = [];
 $formErrors = [];
 $destinations = $destinationModel->listActive();
@@ -41,12 +42,11 @@ if ($isEdit) {
     } catch (RuntimeException $exception) {
         http_response_code(404);
         $formErrors[] = $exception->getMessage();
-        $isEdit = false;
-        $packageId = null;
+        $editLookupFailed = true;
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$editLookupFailed) {
     $values = [
         'destination_id' => (string) ($_POST['destination_id'] ?? ''),
         'title' => trim((string) ($_POST['title'] ?? '')),

@@ -145,6 +145,7 @@ try {
         $userCreatedAtById[$userId] = $createdAt;
     }
 
+    $demoCustomerIds = [];
     $customerHash = password_hash((string) getenv('SEED_CUSTOMER_PASSWORD'), PASSWORD_DEFAULT);
     foreach ($customers as $customer) {
         $createdAt = $seedRandomDate($now, 5, 180);
@@ -158,16 +159,18 @@ try {
         $findUserIdStatement->execute(['email' => $customer['email']]);
         $userId = (int) $findUserIdStatement->fetchColumn();
         $userCreatedAtById[$userId] = $createdAt;
+        $demoCustomerIds[] = $userId;
     }
 
-    // Remove contas antigas de demo que não fazem mais parte do seed.
+    // Remove contas antigas de demo sem purchases (FK ON DELETE RESTRICT).
     $pdo->exec(
         "DELETE FROM users
          WHERE email IN (
              'admin@destyntrips.com',
              'admin@agencia.test',
              'cliente@agencia.test'
-         )"
+         )
+         AND id NOT IN (SELECT user_id FROM purchases)"
     );
 
     $findDestinationStatement = $pdo->prepare(
@@ -276,7 +279,7 @@ try {
     }
 
     $packageIds = $pdo->query('SELECT id FROM packages WHERE is_active = TRUE ORDER BY id ASC')->fetchAll(PDO::FETCH_COLUMN);
-    $customerIds = $pdo->query("SELECT id FROM users WHERE role = 'customer' ORDER BY id ASC")->fetchAll(PDO::FETCH_COLUMN);
+    $customerIds = $demoCustomerIds;
 
     $findPurchaseStatement = $pdo->prepare(
         'SELECT id FROM purchases WHERE user_id = :user_id AND package_id = :package_id LIMIT 1'
