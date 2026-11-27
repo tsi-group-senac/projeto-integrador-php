@@ -1,27 +1,17 @@
-# Setup com XAMPP
+# Setup com XAMPP — Agência Horizonte
 
 > Este documento orienta a execução local do projeto com Apache, PHP, MySQL e phpMyAdmin.
 
-## Para que serve
-
-Use este guia quando for configurar o ambiente local pela primeira vez ou quando outra pessoa da equipe precisar reproduzir a aplicação.
-
 ## 1. Instalação
 
-Instale o XAMPP e confirme que o **Apache** e o **MySQL** conseguem iniciar normalmente.
+Instale o XAMPP e confirme que o **Apache** e o **MySQL** iniciam normalmente.
 
 ## 2. Local do projeto
 
 No Windows, mantenha o repositório dentro de:
 
 ```text
-C:\xampp\htdocs\
-```
-
-Exemplo:
-
-```text
-C:\xampp\htdocs\agenda-facil\
+C:\xampp\htdocs\projeto-integrador-php\
 ```
 
 ## 3. Abrindo o projeto
@@ -29,33 +19,58 @@ C:\xampp\htdocs\agenda-facil\
 Com Apache ativo:
 
 ```text
-http://localhost/agenda-facil/
+http://localhost/projeto-integrador-php/
 ```
 
-## 4. phpMyAdmin
+A entrada redireciona para `frontend/`.
 
-Com MySQL ativo:
+## 4. Banco de dados
 
-```text
-http://localhost/phpmyadmin
+1. Abra `http://localhost/phpmyadmin`
+2. Importe `database/database.sql` (cria o banco `projeto_integrador`)
+3. Copie `backend/config/database.example.php` para `backend/config/database.php`
+4. Ajuste host, porta, usuário e senha do MySQL local
+5. Execute as seeds (senhas apenas por variáveis de ambiente):
+
+```bash
+cd C:\xampp\htdocs\projeto-integrador-php
+set SEED_ADMIN_PASSWORD=SenhaAdminDemo1
+set SEED_CUSTOMER_PASSWORD=SenhaClienteDemo1
+php database/seeds/seed.php
 ```
 
-Importe `database/database.sql` depois de personalizá-lo para o banco do projeto.
+Contas geradas:
 
-## 5. Configuração local do banco
+- Admins: `thiago.barbosa@destyntrips.com`, `arthur.inacio@destyntrips.com`, `pedro.gomes@destyntrips.com`
+- Cliente: `marina.costa@destyntrips.com` (e outros 19 clientes seed)
 
-Copie:
+## 5. Tailwind CSS
 
-```text
-backend/config/database.example.php
+No ambiente acadêmico local, o frontend carrega o **Tailwind Play CDN**. A aplicação permanece utilizável sem JavaScript para ações essenciais (formulários POST, navegação e logout).
+
+## 6. Testes
+
+Unidade (não exige MySQL):
+
+```bash
+php tests/unit/run.php
 ```
 
-para:
+Integração (exige MySQL e `database.php`):
 
-```text
-backend/config/database.php
+```bash
+php tests/integration/run.php
 ```
 
-Depois ajuste nome do banco, usuário e senha de acordo com o ambiente local.
+E2E manual: seguir `tests/e2e/CHECKLIST.md` nos breakpoints 360, 576, 768, 992 e 1200px.
 
-`database.php` não deverá ser enviado ao GitHub.
+## 7. Rotas principais
+
+| Área | URL |
+| --- | --- |
+| Catálogo | `/frontend/index.php` |
+| Login | `/frontend/pages/login.php` |
+| Cadastro | `/frontend/pages/register.php` |
+| Cliente | `/frontend/pages/client/dashboard.php` |
+| Admin | `/frontend/pages/admin/index.php` |
+| CRUD pacotes | `/frontend/pages/admin/packages.php` |
