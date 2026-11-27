@@ -18,6 +18,7 @@ $favicons = app_url('/frontend/assets/favicons');
     <link rel="icon" type="image/png" sizes="32x32" href="<?= e($favicons) ?>/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= e($favicons) ?>/favicon-16x16.png">
     <link rel="icon" type="image/x-icon" href="<?= e($favicons) ?>/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="<?= e(app_url('/frontend/assets/logos/favicon.svg')) ?>">
     <link rel="manifest" href="<?= e($favicons) ?>/site.webmanifest">
     <link rel="mask-icon" href="<?= e($favicons) ?>/safari-pinned-tab.svg" color="#faa935">
     <meta name="msapplication-TileColor" content="#faa935">

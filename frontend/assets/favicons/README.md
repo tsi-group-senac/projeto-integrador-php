@@ -1,6 +1,6 @@
 # Favicons — Destyn Trips
 
-Pacote no padrão [RealFaviconGenerator](https://realfavicongenerator.net/), gerado a partir do mark Destyn Trips (`#faa935`).
+Pacote no padrão RealFaviconGenerator, gerado a partir do **mark** (globo + bússola + avião), **sem** o nome fantasia.
 
 Arquivos:
 
