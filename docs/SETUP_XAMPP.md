@@ -1,70 +1,37 @@
-# Setup com XAMPP — Agência Horizonte
+# Setup com XAMPP — Destyn Trips
 
-> Este documento orienta a execução local do projeto com Apache, PHP, MySQL e phpMyAdmin.
+> Guia completo (Windows, backup, contas demo): **[`.agents/SETUP_WINDOWS_XAMPP.md`](../.agents/SETUP_WINDOWS_XAMPP.md)**.
 
-## 1. Instalação
+## Resumo rápido
 
-Instale o XAMPP e confirme que o **Apache** e o **MySQL** iniciam normalmente.
-
-## 2. Local do projeto
-
-No Windows, mantenha o repositório dentro de:
+1. Instale o XAMPP e inicie **Apache** + **MySQL**.
+2. Coloque o projeto em `C:\xampp\htdocs\projeto-integrador-php\`.
+3. Copie `backend/config/database.example.php` → `backend/config/database.php` (banco `projeto_integrador`, user `root`, senha vazia no XAMPP padrão).
+4. No phpMyAdmin (`http://localhost/phpmyadmin`), importe:
 
 ```text
-C:\xampp\htdocs\projeto-integrador-php\
+database/backups/projeto_integrador_backup.sql
 ```
 
-## 3. Abrindo o projeto
-
-Com Apache ativo:
+5. Abra:
 
 ```text
 http://localhost/projeto-integrador-php/
 ```
 
-A entrada redireciona para `frontend/`.
+## Contas demo
 
-## 4. Banco de dados
+| Papel | E-mail | Senha |
+| --- | --- | --- |
+| Admin | `thiago.barbosa@destyntrips.com` | `SenhaAdminDemo1` |
+| Cliente | `marina.costa@destyntrips.com` | `SenhaClienteDemo1` |
 
-1. Abra `http://localhost/phpmyadmin`
-2. Importe `database/database.sql` (cria o banco `projeto_integrador`)
-3. Copie `backend/config/database.example.php` para `backend/config/database.php`
-4. Ajuste host, porta, usuário e senha do MySQL local
-5. Execute as seeds (senhas apenas por variáveis de ambiente):
+## Alternativa sem backup
 
-```bash
-cd C:\xampp\htdocs\projeto-integrador-php
-set SEED_ADMIN_PASSWORD=SenhaAdminDemo1
-set SEED_CUSTOMER_PASSWORD=SenhaClienteDemo1
-php database/seeds/seed.php
-```
+1. Importe `database/database.sql`
+2. Rode `database/seeds/seed.php` com as variáveis `SEED_*` (ver `.agents/SETUP_WINDOWS_XAMPP.md`)
 
-Contas geradas:
-
-- Admins: `thiago.barbosa@destyntrips.com`, `arthur.inacio@destyntrips.com`, `pedro.gomes@destyntrips.com`
-- Cliente: `marina.costa@destyntrips.com` (e outros 19 clientes seed)
-
-## 5. Tailwind CSS
-
-No ambiente acadêmico local, o frontend carrega o **Tailwind Play CDN**. A aplicação permanece utilizável sem JavaScript para ações essenciais (formulários POST, navegação e logout).
-
-## 6. Testes
-
-Unidade (não exige MySQL):
-
-```bash
-php tests/unit/run.php
-```
-
-Integração (exige MySQL e `database.php`):
-
-```bash
-php tests/integration/run.php
-```
-
-E2E manual: seguir `tests/e2e/CHECKLIST.md` nos breakpoints 360, 576, 768, 992 e 1200px.
-
-## 7. Rotas principais
+## Rotas principais
 
 | Área | URL |
 | --- | --- |
