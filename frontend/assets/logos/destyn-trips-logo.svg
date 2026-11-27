@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 70" fill="none" role="img" aria-labelledby="destynTitle destynDesc">
+  <title id="destynTitle">Destyn Trips</title>
+  <desc id="destynDesc">Logo Destyn Trips com avião e rota pontilhada</desc>
+  <path d="M168 8c18-2 32 6 38 14" stroke="#faa935" stroke-width="2" stroke-dasharray="2 4" stroke-linecap="round"/>
+  <path d="M198 10l12-6-2 13-6-3-4-4z" fill="#faa935"/>
+  <text x="0" y="38" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="800" fill="#0b2727" letter-spacing="1">DESTYN</text>
+  <text x="128" y="38" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="600" fill="#faa935" letter-spacing="1">TRIPS</text>
+  <text x="2" y="58" font-family="Montserrat, Arial, sans-serif" font-size="10" font-weight="500" fill="#6e7074">it&apos;s time to travel the world</text>
+</svg>

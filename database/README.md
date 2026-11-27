@@ -14,7 +14,28 @@ Utilize esta pasta para versionar a estrutura do banco MySQL do projeto.
 database.sql
 ```
 
-Ele deve permitir que outro integrante da equipe consiga criar a estrutura básica do banco utilizando o phpMyAdmin.
+Ele permite criar a estrutura do banco utilizando o phpMyAdmin. O schema usa
+`utf8mb4`, chaves estrangeiras restritivas e desativação lógica por meio de
+`is_active` para destinos e pacotes.
+
+## Seeds demonstrativas
+
+Após importar `database.sql`, execute `database/seeds/seed.php` pela linha de
+comando. As senhas são obrigatoriamente fornecidas por variáveis de ambiente e
+transformadas em hash com `password_hash()` durante a execução; nenhuma senha
+fica versionada no projeto.
+
+Exemplo no Linux/macOS:
+
+```bash
+DB_HOST=127.0.0.1 DB_PORT=3306 DB_NAME=projeto_integrador \
+DB_USER=root DB_PASSWORD="$DB_PASSWORD" \
+SEED_ADMIN_PASSWORD="$SEED_ADMIN_PASSWORD" \
+SEED_CUSTOMER_PASSWORD="$SEED_CUSTOMER_PASSWORD" php database/seeds/seed.php
+```
+
+Substitua os valores de conexão conforme o ambiente local e nunca use senhas
+reais nos dados demonstrativos.
 
 ## Regras
 

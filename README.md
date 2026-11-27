@@ -1,8 +1,8 @@
 # Projeto Integrador — PHP + MySQL
 
-> Repositório-base da disciplina para iniciar o Projeto Integrador utilizando **PHP puro, MySQL, phpMyAdmin, HTML, CSS, JavaScript, Bootstrap, XAMPP, Git e GitHub**.
+> Aplicação da equipe: **Agência Horizonte** — catálogo de roteiros, autenticação, compra simulada e área administrativa em **PHP puro, MySQL, Tailwind CSS, XAMPP, Git e GitHub**.
 
-Este repositório **não é um projeto pronto**. Ele contém a estrutura inicial, exemplos, templates e orientações que cada equipe deverá adaptar para o próprio projeto.
+Setup rápido: importe `database/database.sql`, configure `backend/config/database.php`, rode `database/seeds/seed.php` e acesse `http://localhost/projeto-integrador-php/`. Detalhes em `docs/SETUP_XAMPP.md`.
 
 ---
 
