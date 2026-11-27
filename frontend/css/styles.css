@@ -1,22 +1,52 @@
-/*
- * CSS inicial do template.
- * Substitua estas regras pela identidade visual definida pela equipe no Figma.
- */
-
 :root {
-    --project-bg: #f8f9fa;
+  --dt-orange: #faa935;
+  --dt-ink: #0b2727;
+  --dt-muted: #6e7074;
+  --dt-sky: #cae5f4;
+  --dt-white: #ffffff;
+  --focus-ring: #faa935;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    min-height: 100vh;
+  color: var(--dt-ink);
+  background: var(--dt-white);
 }
 
-#inicio {
-    min-height: 62vh;
-    display: flex;
-    align-items: center;
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.font-script {
+  font-family: "Island Moments", "Segoe Script", "Brush Script MT", cursive;
+}
+
+.dt-underline-memories {
+  background-image: linear-gradient(transparent 70%, rgba(250, 169, 53, 0.45) 70%);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
 }
